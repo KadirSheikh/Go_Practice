@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	"gin_gorm_jwt/modal"
 )
 
 //this function is used to setup connection to database
@@ -31,7 +33,7 @@ func SetupDBConnection() *gorm.DB {
 	}
 	log.Println("Connection was successful!!")
 
-	//db.AutoMigrate()
+	db.AutoMigrate(&modal.Book{}, &modal.Auther{})
 	return db
 
 }

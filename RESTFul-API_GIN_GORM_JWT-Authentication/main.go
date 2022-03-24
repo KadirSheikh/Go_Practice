@@ -9,15 +9,24 @@ import (
 
 	"gin_gorm_jwt/config"
 	"gin_gorm_jwt/controller"
+	"gin_gorm_jwt/middleware"
+	"gin_gorm_jwt/repository"
+	"gin_gorm_jwt/service"
 )
 
 var (
-	db             *gorm.DB                  = config.SetupDBConnection()
-	authController controller.AuthController = controller.NewAuthController()
+	db               *gorm.DB                    = config.SetupDBConnection()
+	autherRepository repository.AutherRepository = repository.NewAutherRepository(db)
+	jwtService       service.JWTService          = service.NewJWTService()
+	autherService    service.AutherService       = service.NewAutherService(autherRepository)
+	authService      service.AuthService         = service.NewAuthService(autherRepository)
+	authController   controller.AuthController   = controller.NewAuthController(authService, jwtService)
+	autherController controller.AutherController = controller.NewAutherController(autherService, jwtService)
 )
 
 func main() {
 	defer config.CloseDBConnection(db)
+
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -25,10 +34,17 @@ func main() {
 		})
 	})
 
+	// authRoutes := r.Group("api/auth", middleware.AuthorizeJWT(jwtService))
 	authRoutes := r.Group("api/auth")
 	{
 		authRoutes.POST("/login", authController.Login)
 		authRoutes.POST("/register", authController.Register)
+	}
+
+	autherRoutes := r.Group("api/auther", middleware.AuthorizeJWT(jwtService))
+	{
+		autherRoutes.GET("/profile", autherController.Profile)
+		autherRoutes.PUT("/profile", autherController.Update)
 	}
 
 	errEnv := godotenv.Load()
