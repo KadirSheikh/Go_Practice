@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-//AutherRepository is contract what autherRepository can do to db
+//AutherRepository is contract what autherRepository can do to db.
 type AutherRepository interface {
 	InsertAuther(auther modal.Auther) modal.Auther
 	UpdateAuther(auther modal.Auther) modal.Auther
@@ -52,7 +52,6 @@ func (db *autherConnection) UpdateAuther(auther modal.Auther) modal.Auther {
 }
 
 // verify auther creds
-
 func (db *autherConnection) VerifyCredential(email string, password string) interface{} {
 	var auther modal.Auther
 	res := db.connection.Where("email = ?", email).Take(&auther)

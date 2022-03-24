@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//this function is used to validates the token auther given, return 401 if not valid
+//this function is used to validates the token auther given and also used to extract auther id from the token, return 401 if not valid
 func AuthorizeJWT(jwtService service.JWTService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")

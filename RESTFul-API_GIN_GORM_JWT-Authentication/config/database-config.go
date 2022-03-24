@@ -25,21 +25,22 @@ func SetupDBConnection() *gorm.DB {
 	dbName := os.Getenv("DB_NAME")
 	dbHost := os.Getenv("DB_HOST")
 
+	//connection string
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect to database")
 	}
-	log.Println("Connection was successful!!")
+	log.Println("Successfully connected to database...!!!")
 
+	//migrating defined modals to DB table
 	db.AutoMigrate(&modal.Book{}, &modal.Auther{})
 	return db
 
 }
 
 //this function is used to close connection to database
-
 func CloseDBConnection(db *gorm.DB) {
 	dbMySql, err := db.DB()
 	if err != nil {

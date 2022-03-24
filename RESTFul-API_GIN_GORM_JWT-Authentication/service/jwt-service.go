@@ -39,6 +39,8 @@ func getSecretKey() string {
 }
 
 func (j *jwtService) GenerateToken(AutherID string) string {
+
+	//passing auther id into jwt token
 	claims := &jwtCustomClaim{
 		AutherID,
 		jwt.StandardClaims{

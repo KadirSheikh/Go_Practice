@@ -37,7 +37,7 @@ func NewBookController(bookServ service.BookService, jwtServ service.JWTService)
 
 func (c *bookController) All(context *gin.Context) {
 	var books []modal.Book = c.bookService.All()
-	res := helper.BuildResponse(true, "OK", books)
+	res := helper.BuildSuccessResponse(true, "OK", books)
 	context.JSON(http.StatusOK, res)
 }
 
@@ -54,7 +54,7 @@ func (c *bookController) FindByID(context *gin.Context) {
 		res := helper.BuildErrorResponse("Data not found", "No data with given id", helper.EmptyObj{})
 		context.JSON(http.StatusNotFound, res)
 	} else {
-		res := helper.BuildResponse(true, "OK", book)
+		res := helper.BuildSuccessResponse(true, "OK", book)
 		context.JSON(http.StatusOK, res)
 	}
 }
@@ -73,7 +73,7 @@ func (c *bookController) Insert(context *gin.Context) {
 			bookCreateDTO.AutherID = convertedAutherID
 		}
 		result := c.bookService.Insert(bookCreateDTO)
-		response := helper.BuildResponse(true, "OK", result)
+		response := helper.BuildSuccessResponse(true, "OK", result)
 		context.JSON(http.StatusCreated, response)
 	}
 }
@@ -100,7 +100,7 @@ func (c *bookController) Update(context *gin.Context) {
 			bookUpdateDTO.AutherID = id
 		}
 		result := c.bookService.Update(bookUpdateDTO)
-		response := helper.BuildResponse(true, "OK", result)
+		response := helper.BuildSuccessResponse(true, "OK", result)
 		context.JSON(http.StatusOK, response)
 	} else {
 		response := helper.BuildErrorResponse("You dont have permission", "You are not the owner", helper.EmptyObj{})
@@ -125,7 +125,7 @@ func (c *bookController) Delete(context *gin.Context) {
 	auhterID := fmt.Sprintf("%v", claims["auhter_id"])
 	if c.bookService.IsAllowedToEdit(auhterID, book.ID) {
 		c.bookService.Delete(book)
-		res := helper.BuildResponse(true, "Deleted", helper.EmptyObj{})
+		res := helper.BuildSuccessResponse(true, "Deleted", helper.EmptyObj{})
 		context.JSON(http.StatusOK, res)
 	} else {
 		response := helper.BuildErrorResponse("You dont have permission", "You are not the owner", helper.EmptyObj{})

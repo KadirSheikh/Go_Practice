@@ -23,7 +23,7 @@ type authService struct {
 	autherRepository repository.AutherRepository
 }
 
-//NewAuthService creates a new instance of AuthService
+//NewAuthService creates a new instance of AuthService.
 func NewAuthService(autherRep repository.AutherRepository) AuthService {
 	return &authService{
 		autherRepository: autherRep,
@@ -61,6 +61,7 @@ func (service *authService) IsDuplicateEmail(email string) bool {
 	return !(res.Error == nil)
 }
 
+// compare plain password provided by auther with hashed password from db
 func comparePassword(hashedPwd string, plainPassword []byte) bool {
 	byteHash := []byte(hashedPwd)
 	err := bcrypt.CompareHashAndPassword(byteHash, plainPassword)

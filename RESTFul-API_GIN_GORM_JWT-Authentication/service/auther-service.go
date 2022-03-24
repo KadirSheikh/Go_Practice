@@ -19,7 +19,7 @@ type autherService struct {
 	autherRepository repository.AutherRepository
 }
 
-//NewAutherService creates a new instance of AutherService
+//NewAutherService creates a new instance of AutherService.
 func NewAutherService(autherRepo repository.AutherRepository) AutherService {
 	return &autherService{
 		autherRepository: autherRepo,

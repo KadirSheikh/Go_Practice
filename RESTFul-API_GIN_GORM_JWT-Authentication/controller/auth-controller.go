@@ -43,7 +43,7 @@ func (c *authController) Login(ctx *gin.Context) {
 	if v, ok := authResult.(modal.Auther); ok {
 		generatedToken := c.jwtService.GenerateToken(strconv.FormatUint(v.ID, 10))
 		v.Token = generatedToken
-		response := helper.BuildResponse(true, "OK!", v)
+		response := helper.BuildSuccessResponse(true, "OK!", v)
 		ctx.JSON(http.StatusOK, response)
 		return
 	}
@@ -67,7 +67,7 @@ func (c *authController) Register(ctx *gin.Context) {
 		createdAuther := c.authService.CreateAuther(registerDTO)
 		token := c.jwtService.GenerateToken(strconv.FormatUint(createdAuther.ID, 10))
 		createdAuther.Token = token
-		response := helper.BuildResponse(true, "OK!", createdAuther)
+		response := helper.BuildSuccessResponse(true, "OK!", createdAuther)
 		ctx.JSON(http.StatusCreated, response)
 	}
 }

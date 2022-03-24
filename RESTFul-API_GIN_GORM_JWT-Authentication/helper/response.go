@@ -13,7 +13,7 @@ type Response struct {
 type EmptyObj struct{}
 
 //this method is to inject data value to dynamic success response
-func BuildResponse(status bool, message string, data interface{}) Response {
+func BuildSuccessResponse(status bool, message string, data interface{}) Response {
 	res := Response{
 		Status:  status,
 		Message: message,

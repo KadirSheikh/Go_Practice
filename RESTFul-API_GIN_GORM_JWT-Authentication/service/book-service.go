@@ -24,6 +24,7 @@ type bookService struct {
 	bookRepository repository.BookRepository
 }
 
+//NewBookService creates a new instance of BookService.
 func NewBookService(bookRepo repository.BookRepository) BookService {
 	return &bookService{
 		bookRepository: bookRepo,

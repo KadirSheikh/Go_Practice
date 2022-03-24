@@ -53,7 +53,7 @@ func (c *autherController) Update(context *gin.Context) {
 	}
 	autherUpdateDTO.ID = id
 	u := c.autherService.Update(autherUpdateDTO)
-	res := helper.BuildResponse(true, "OK!", u)
+	res := helper.BuildSuccessResponse(true, "OK!", u)
 	context.JSON(http.StatusOK, res)
 }
 
@@ -66,7 +66,7 @@ func (c *autherController) Profile(context *gin.Context) {
 	claims := token.Claims.(jwt.MapClaims)
 	id := fmt.Sprintf("%v", claims["auther_id"])
 	auther := c.autherService.Profile(id)
-	res := helper.BuildResponse(true, "OK", auther)
+	res := helper.BuildSuccessResponse(true, "OK", auther)
 	context.JSON(http.StatusOK, res)
 
 }
