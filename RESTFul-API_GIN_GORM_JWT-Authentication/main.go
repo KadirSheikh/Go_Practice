@@ -17,11 +17,14 @@ import (
 var (
 	db               *gorm.DB                    = config.SetupDBConnection()
 	autherRepository repository.AutherRepository = repository.NewAutherRepository(db)
+	bookRepository   repository.BookRepository   = repository.NewBookRepository(db)
 	jwtService       service.JWTService          = service.NewJWTService()
 	autherService    service.AutherService       = service.NewAutherService(autherRepository)
+	bookService      service.BookService         = service.NewBookService(bookRepository)
 	authService      service.AuthService         = service.NewAuthService(autherRepository)
 	authController   controller.AuthController   = controller.NewAuthController(authService, jwtService)
 	autherController controller.AutherController = controller.NewAutherController(autherService, jwtService)
+	bookController   controller.BookController   = controller.NewBookController(bookService, jwtService)
 )
 
 func main() {
@@ -45,6 +48,15 @@ func main() {
 	{
 		autherRoutes.GET("/profile", autherController.Profile)
 		autherRoutes.PUT("/profile", autherController.Update)
+	}
+
+	bookRoutes := r.Group("api/books", middleware.AuthorizeJWT(jwtService))
+	{
+		bookRoutes.GET("/", bookController.All)
+		bookRoutes.POST("/", bookController.Insert)
+		bookRoutes.GET("/:id", bookController.FindByID)
+		bookRoutes.PUT("/:id", bookController.Update)
+		bookRoutes.DELETE("/:id", bookController.Delete)
 	}
 
 	errEnv := godotenv.Load()

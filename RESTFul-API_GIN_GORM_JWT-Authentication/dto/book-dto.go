@@ -12,5 +12,5 @@ type BookUpdateDTO struct {
 type BookCreateDTO struct {
 	Title       string `json:"title" form:"title" binding:"required"`
 	Description string `json:"description" form:"description" binding:"required"`
-	AutherID    uint64 `json:"auther_id,omitempty"  form:"auther_id,omitempty"`
+	AutherID    uint64 `json:"auther_id,omitempty" form:"auther_id,omitempty"`
 }
